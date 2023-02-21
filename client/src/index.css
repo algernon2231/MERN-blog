@@ -1,0 +1,414 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #222;
+}
+
+img {
+  max-width: 100%;
+}
+
+main {
+  padding: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 100;
+  width: 100%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-bottom: 2px dotted #ddd;
+}
+
+
+header a {
+  text-decoration: none;
+  color: inherit;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: medium;
+  cursor: pointer;
+}
+
+header a:hover {
+  filter: brightness(0.6);
+}
+
+header a.logo {
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+header nav {
+  display: flex;
+  gap: 15px;
+}
+
+.posts {
+  min-height: 800px;
+}
+
+div.post {
+  display: flex;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 20px;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  justify-items: center;
+  align-items: center;
+  outline: none;
+}
+
+div.post:hover {
+  border: 1px solid #ccc;
+}
+
+@media screen and (min-width: 700px) {
+  div.post {
+    grid-template-columns: .9fr 1.1fr;
+  }
+}
+
+div.post div.image {
+  width: 40%;
+}
+
+div.post div.texts {
+  width: 60%;
+  padding: 0 20px;
+}
+
+div.post div.texts h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+div.post div.texts a {
+  text-decoration: none;
+  color: #222;
+}
+
+div.post p.info {
+  margin: 6px 0;
+  color: #888;
+  font-size: .7rem;
+  font-weight: bold;
+  display: flex;
+  gap: 10px;
+}
+
+div.post p.info a {
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+div.post p.summary {
+  margin: 6px 0px;
+  line-height: 1.5rem;
+}
+
+div.post .image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+form.login,
+form.register {
+  max-width: 400px;
+  min-height: 300px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+form h1 {
+  text-align: center;
+}
+
+input {
+  display: block;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+button {
+  width: 100%;
+  display: block;
+  background-color: #555;
+  border: 0;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: #fff;
+  cursor: pointer;
+}
+
+div.post-page div.image {
+  max-height: 500px;
+  display: flex;
+  overflow: hidden;
+}
+
+div.post-page div.image img {
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
+}
+
+div.post-page a {
+  color: #333;
+  text-decoration: underline;
+}
+
+a svg {
+  height: 20px;
+}
+
+div.post-page h1 {
+  text-align: center;
+  margin: 10px 0 5px;
+}
+
+div.post-page time {
+  text-align: center;
+  display: block;
+  font-size: 1rem;
+  color: #aaa;
+  margin: 10px 0;
+}
+
+div.post-page div.author {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: .8rem;
+  font-weight: bold;
+}
+
+div.content p {
+  line-height: 2rem;
+  margin: 30px 0;
+}
+
+div.content li {
+  margin-bottom: 10px;
+}
+
+div.edit-row {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.post-page a.edit-btn,
+div.post-page a.delete-btn {
+  background-color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  margin: 0 5px;
+  padding: 12px 12px;
+  text-align: center;
+}
+
+.pagination button:hover,
+.pagination button:focus,
+.pagination button:active {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #fff;
+}
+
+.pagination button[disabled] {
+  background-color: #ddd;
+  border-color: #ddd;
+  color: #888;
+  cursor: default;
+}
+
+.loading-container {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+
+}
+
+.loading-image {
+  width: 50px;
+  height: 50px;
+}
+
+.postUser .header {
+  font-size: 20px;
+  font-weight: 400;
+  margin-left: 16.6px;
+}
+
+.postUser .author_header {
+  font-weight: bold;
+  border-bottom: 1px dotted;
+}
+
+/* Modal  */
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-page {
+  position: relative;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
+  max-height: 90%;
+  overflow: auto;
+}
+
+.close-btn {
+
+  top: 50px;
+  /* right: 400px; */
+  right: 19%;
+  position: fixed;
+  display: block;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 32px;
+  cursor: pointer;
+  background: #f96b1a;
+  width: 32px;
+  height: 32px;
+  -webkit-transform: translate3d(0, 0, 0);
+  top: 32px;
+  margin-left: 13px;
+}
+
+/* Scroll bar */
+/* For Webkit based browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+
+}
+
+/* For Firefox */
+::-moz-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+/* For IE/Edge */
+::-ms-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+/* For Opera */
+::-o-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+
+@media screen and (max-width: 600px) {
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1px;
+  }
+
+  header a.logo {
+    font-size: 1rem;
+
+  }
+
+  div.post {
+    display: block;
+  }
+
+  div.post div.image {
+    width: 100%;
+  }
+
+  div.post div.texts {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  div.post div.texts h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  div.post p.summary {
+    display: none;
+  }
+
+  .pagination button {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    margin: 0 3px;
+    padding: 5px 8px;
+  }
+}
