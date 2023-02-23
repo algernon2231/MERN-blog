@@ -275,6 +275,7 @@ div.post-page a.delete-btn {
   justify-content: center;
   align-items: center;
   height: 60vh;
+  outline: none;
 
 }
 

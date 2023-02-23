@@ -33,7 +33,13 @@ const CreatePost = () => {
         })
     }
     const handleEditorChange = (content, delta, source, editor) => {
-        handleInputChange('content', content);
+        const event = {
+            target: {
+                name: 'content',
+                value: content
+            }
+        }
+        handleInputChange(event);
     }
     const handleFileChange = (e) => {
         setFormData({
@@ -82,7 +88,6 @@ const CreatePost = () => {
                 onChange={handleFileChange}
             />
             <ReactQuill
-                name='content'
                 value={formData.content}
                 placeholder="Start writing..."
                 theme='snow'
