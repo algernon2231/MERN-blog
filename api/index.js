@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
@@ -12,7 +13,6 @@ import fs from 'fs';
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
 
 dotenv.config();
 const app = express();
@@ -33,6 +33,37 @@ mongoose.connect('mongodb+srv://dongocanh:cuncon_kk9@cluster0.bdfsw.mongodb.net/
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch(err => console.error('Error connecting to MongoDB Atlas', err));
 
+let refreshTokens = [];
+
+function createToken(user) {
+    return jwt.sign({ username: user.username, _id: user._id, email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10s' })
+}
+
+function refreshTokenFn(user) {
+    return jwt.sign({ username: user.username, _id: user._id, email: user.email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15m' })
+}
+
+app.post('/refreshToken', (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken) return res.status(401).json('You are not authenticated');
+    if (!refreshTokens.includes(refreshToken)) {
+        return res.status(403).json('Refresh Token is not valid')
+    }
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) console.log(err);
+        refreshTokens = refreshTokens.filter(token => token !== refreshToken);
+
+        const newAccessToken = createToken(user);
+        const newRefreshToken = refreshTokenFn(user);
+
+        refreshTokens.push(newRefreshToken);
+        res.status(200).json({
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken
+        });
+    })
+
+})
 
 app.post('/register', async (req, res) => {
     try {
@@ -48,8 +79,10 @@ app.post('/login', async (req, res) => {
     if (!userDoc) return res.status(400).json('Unthenticated');
     const passOk = await userDoc.comparePassword(password);
     if (passOk) {
-        const token = userDoc.createToken();
-        res.setHeader('Authorization', token);
+        const access_token = createToken(userDoc);
+        const refresh_token = refreshTokenFn(userDoc);
+        refreshTokens.push(refresh_token);
+        res.setHeader('Authorization', `${access_token} ${refresh_token}`);
         res.json({
             _id: userDoc._id,
             username: userDoc.username,

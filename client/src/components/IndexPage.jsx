@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Helmet } from 'react-helmet';
 import LoadingImage from './LoadingImage';
-import Pagination from './Pagination';
+import Pagination1 from './Pagination1';
 import Post from './Post'
 
 const IndexPage = () => {
@@ -53,7 +53,7 @@ const IndexPage = () => {
                 ))}
             </div>
             {posts && (
-                <Pagination
+                <Pagination1
                     currentPage={currentPage}
                     totalPages={totalPages}
                     handlePageChange={handlePageChange}

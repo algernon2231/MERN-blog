@@ -2,10 +2,9 @@ import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import jwt_decode from 'jwt-decode'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../UserContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-    const location = useLocation();
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useContext(UserContext);
 
@@ -14,20 +13,23 @@ const Header = () => {
         if (token) {
             const decoded = jwt_decode(token);
             setUserInfo(decoded);
+        } else {
+            navigate('/');
         }
-    }, [token, setUserInfo]);
+    }, [token, setUserInfo])
+
     const logOut = useCallback(() => {
         fetch('http://localhost:4000/logout', {
             credentials: 'include',
             method: 'POST'
         });
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         setUserInfo(null);
-        localStorage.setItem('lastLocation', location.pathname);
         navigate('/login')
-    }, [location.pathname, navigate, setUserInfo]);
-
+    }, [navigate, setUserInfo]);
     const username = useMemo(() => userInfo?.username, [userInfo]);
+
     return (
         <header>
             <Link to="/" className='logo'>MyBlog</Link>
@@ -41,7 +43,7 @@ const Header = () => {
                     <Link to="/register" className='navLink'>Register</Link>
                 </>}
             </nav>
-        </header>
+        </header >
     )
 }
 

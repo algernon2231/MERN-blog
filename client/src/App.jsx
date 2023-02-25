@@ -1,49 +1,51 @@
-import React, { useContext } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
-import Protected from './Auth/Protected'
-import RedirectRoute from './Auth/RedirectRoute'
-import CreatePost from './components/CreatePost'
-import EditPost from './components/EditPost'
-import GetPostByName from './components/GetPostByName'
-import IndexPage from './components/IndexPage'
-import Layout from './components/Layout'
-import Login from './components/Login'
-import Register from './components/Register'
-import SinglePost from './components/SinglePost'
-import { UserContext } from './UserContext'
+import React, { lazy, useContext, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Protected from './Auth/Protected';
+import RedirectRoute from './Auth/RedirectRoute';
+import LoadingImage from './components/LoadingImage';
+
+const CreatePost = lazy(() => import('./components/CreatePost'));
+const EditPost = lazy(() => import('./components/EditPost'));
+const GetPostByName = lazy(() => import('./components/GetPostByName'));
+const IndexPage = lazy(() => import('./components/IndexPage'));
+const Layout = lazy(() => import('./components/Layout'));
+const Login = lazy(() => import('./components/Login'));
+const Register = lazy(() => import('./components/Register'));
+const SinglePost = lazy(() => import('./components/SinglePost'));
+
+import { UserContext } from './UserContext';
 
 const App = () => {
   const [userInfo] = useContext(UserContext);
 
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<IndexPage />} />
+      <Route path='/' element={<Suspense fallback={<LoadingImage />}><Layout /></Suspense>}>
+        <Route index element={<Suspense fallback={<div>Loading...</div>}><IndexPage /></Suspense>} />
         <Route path='/login' element={
           <RedirectRoute>
-            <Login />
+            <Suspense fallback={<LoadingImage />}><Login /></Suspense>
           </RedirectRoute>
         } />
         <Route path='/register' element={
           <RedirectRoute>
-            <Register />
+            <Suspense fallback={<LoadingImage />}><Register /></Suspense>
           </RedirectRoute>
         } />
         <Route path='/create' element={
           <Protected >
-            <CreatePost />
+            <Suspense fallback={<LoadingImage />}><CreatePost /></Suspense>
           </Protected>
         } />
-        <Route path='/post/:slug' element={<SinglePost />} />
+        <Route path='/post/:slug' element={<Suspense fallback={<LoadingImage />}><SinglePost /></Suspense>} />
         <Route path='/edit/:slug' element={
           <Protected>
-            <EditPost />
+            <Suspense fallback={<LoadingImage />}><EditPost /></Suspense>
           </Protected>
         } />
-        <Route path='/post/getByName' element={<GetPostByName />} />
+        <Route path='/post/getByName' element={<Suspense fallback={<LoadingImage />}><GetPostByName /></Suspense>} />
       </Route>
     </Routes>
   )
 }
-
-export default App
+export default App;

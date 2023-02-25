@@ -1,9 +1,11 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
+import useFetch from '../Auth/useFetch';
 
 const CreatePost = () => {
+    const { callFetch } = useFetch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         title: '',
@@ -51,23 +53,18 @@ const CreatePost = () => {
         e.preventDefault();
         const { title, summary, content, file } = formData;
 
-        const data = new FormData();
-        data.append('title', title);
-        data.append('summary', summary);
-        data.append('content', content);
-        data.append('file', file);
+        const data1 = new FormData();
+        data1.append('title', title);
+        data1.append('summary', summary);
+        data1.append('content', content);
+        data1.append('file', file);
 
-        const token = localStorage.getItem('token');
-        if (!token) return navigate('/login');
-        const res = await fetch('http://localhost:4000/post', {
-            method: 'POST',
-            body: data,
-            credentials: 'include',
-            headers: { Authorization: token }
-        })
-        if (res.ok) {
-            return navigate('/')
+        const { response } = await callFetch('http://localhost:4000/post', 'POST', data1);
+        if (response.status === 200) {
+            navigate('/');
         }
+
+
     }
     return (
         <form onSubmit={handleSubmit}>

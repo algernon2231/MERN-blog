@@ -6,8 +6,10 @@ import { formatISO9075 } from 'date-fns'
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import LoadingImage from './LoadingImage';
+import useFetch from '../Auth/useFetch';
 
 const SinglePost = () => {
+    const { callFetch } = useFetch();
     const navigate = useNavigate();
     const { slug } = useParams();
     const id = useMemo(() => {
@@ -43,13 +45,17 @@ const SinglePost = () => {
 
 
     const delPost = async () => {
-        const token = localStorage.getItem('token');
-        await fetch(`http://localhost:4000/post/${id}`, {
-            credentials: 'include',
-            method: 'DELETE',
-            headers: { Authorization: token }
-        });
-        navigate('/');
+
+        const { response, data } = await callFetch(`http://localhost:4000/post/${id}`, 'DELETE');
+        console.log(response);
+        if (response.ok) navigate('/')
+        // const token = localStorage.getItem('token');
+        // await fetch(`http://localhost:4000/post/${id}`, {
+        //     credentials: 'include',
+        //     method: 'DELETE',
+        //     headers: { Authorization: token }
+        // });
+        // navigate('/');
     }
 
     const toggleModal = () => {

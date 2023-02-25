@@ -2,8 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import useFetch from '../Auth/useFetch';
+
 
 const EditPost = () => {
+    const { callFetch } = useFetch();
     const navigate = useNavigate();
     const { slug } = useParams();
     const id = useMemo(() => {
@@ -54,13 +57,16 @@ const EditPost = () => {
 
         const token = localStorage.getItem('token');
         if (!token) return navigate('/login');
-        const res = await fetch(`http://localhost:4000/post/${id}`, {
-            method: 'PUT',
-            body: data,
-            credentials: 'include',
-            headers: { Authorization: token }
-        })
-        if (res.ok) {
+
+        const { response } = await callFetch(`http://localhost:4000/post/${id}`, 'PUT', data);
+
+        // const res = await fetch(`http://localhost:4000/post/${id}`, {
+        //     method: 'PUT',
+        //     body: data,
+        //     credentials: 'include',
+        //     headers: { Authorization: token }
+        // })
+        if (response.ok) {
             return navigate('/post/' + id)
         }
     }

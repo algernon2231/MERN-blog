@@ -29,7 +29,10 @@ UserSchema.methods = {
         return await bcrypt.compare(password, this.password);
     },
     createToken() {
-        return jwt.sign({ username: this.username, _id: this._id, email: this.email }, process.env.ACCESS_TOKEN_SECRET)
+        return jwt.sign({ username: this.username, _id: this._id, email: this.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10s' })
+    },
+    refreshToken() {
+        return jwt.sign({ username: this.username, _id: this._id, email: this.email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15m' })
     }
 }
 const User = model('User', UserSchema);

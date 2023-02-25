@@ -21,13 +21,12 @@ const Login = () => {
         if (response.ok) {
             response.json().then(info => setUserInfo(info));
             const token = response.headers.get('Authorization');
-            localStorage.setItem('token', token);
-            const lastLocation = localStorage.getItem('lastLocation');
-            if (lastLocation) {
-                return navigate(lastLocation);
-            } else {
-                return navigate(-1);
-            }
+            const accessToken = token.split(' ')[0];
+            const refreshToken = token.split(' ')[1];
+            localStorage.setItem('token', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+
+
         } else {
             alert('Wrong credentials');
         }
